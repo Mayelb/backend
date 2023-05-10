@@ -1,3 +1,7 @@
+const { error } = require("console");
+const e = require("express");
+const fs = require("fs");
+
 class ProductManager {
   constructor() {
     this.id = 1;
@@ -35,9 +39,9 @@ class ProductManager {
         return "Fields missing";
       }
 
-      let prod = { ...product, id: this.id };
+      let newProdduct = { ...product, id: this.id };
 
-      data.push(prod);
+      data.push(newProdduct);
       const productsString = JSON.stringify(data);
       await fs.promises.writeFile(this.path, productsString);
       this.id++;
@@ -92,12 +96,9 @@ class ProductManager {
   }
 }
 
-const { error } = require("console");
-const e = require("express");
-const fs = require("fs");
 
 const product = {
-  title: "Taza",
+  title: "taza",
   description: " De cerámica",
   price: 2000,
   thumbail: "/src/assets/img/taza.jpg",
@@ -105,17 +106,34 @@ const product = {
   stock: 20,
 };
 const product2 = {
-  title: "Vaso térmico",
+  title: "vaso térmico",
   description: "Frío/calor ",
   price: 3500,
   thumbail: "/src/assets/img/mugCafe.jpg",
   code: 14278,
   stock: 20,
 };
+const product3 = {
+  title: "pantufla",
+  description: " ",
+  price: 5500,
+  thumbail: "/src/public/pantufla.jpg",
+  code: 1350,
+  stock: 20,
+};
+const product4 = {
+  title: "azucarera",
+  description: "de cerámica  ",
+  price: 4000,
+  thumbail: "/src/public/azucarera.jpg",
+  code: 1280,
+  stock: 20,
+};
+
 const productManager = new ProductManager();
 const asynFn = async () => {
   console.log(await productManager.addProduct(product));
-  console.log(await productManager.addProduct(product2));
+  console.log(await productManager.addProduct(product3));
   console.log(await productManager.getProductByid(product));
   console.log(await productManager.updateProduct(product)); 
 };
