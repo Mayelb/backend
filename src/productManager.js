@@ -1,6 +1,6 @@
-const { error } = require("console");
-const e = require("express");
-const fs = require("fs");
+import  { error } from "console";
+import express from "express";
+import  fs from"fs/promises";
 
 class ProductManager {
   constructor() {
@@ -140,4 +140,4 @@ const asynFn = async () => {
 
 asyncFn();
 
-module.exports = productManager;
+ export default productManager;

@@ -1,6 +1,7 @@
-const productRouter = require("express");
-const ProductManager = require("../products.json");
-const productManager = new ProductManager();
+import Router from "express";
+import Router from Router.Router();
+import ProductManager from "../products.json";
+const  productManager = new ProductManager();
 
 productRouter.get(`/products`, async (req, res) => {
   try {
@@ -97,4 +98,4 @@ productRouter.delete("products/:id", async(req,res)=>{
   }
 });
 
-module.exports = productRouter;
+export default  productsRouter;

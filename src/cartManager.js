@@ -1,6 +1,6 @@
-const e = require("express");
+import express from "express";
 const fs = require("fs");
-const productManager = require("./productManager");
+import productManager from "./productManager";
  
 
 class CartManager {
@@ -98,11 +98,10 @@ class CartManager {
    }
 }
 
-
-module.export = CartManager;
-
 const CartManager = new CartManager();
 const asynFn = async () => {
   console.log(await CartManager.addCart(product));
  
 };
+
+export default CartManager;

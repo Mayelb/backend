@@ -1,6 +1,6 @@
-const Router = require("express");
-const Router = Router.Router();
-const CartManager = require ("../cartManager.js");
+import Router from "express";
+import Router from Router.Router();
+import CartManager  from "../cartManager.js";
 const path = "/src/carts.json";
 const CartManager = new CartManager(path);
 
@@ -93,4 +93,4 @@ cartRouter.put("/:idCart/products/:idProduct", async(req, res)  =>{
      }
 });
 
-module.exports = cartRouter;
+export default cartRouter;
