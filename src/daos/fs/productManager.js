@@ -101,43 +101,47 @@ const product = {
   title: "taza",
   description: " De cerámica",
   price: 2000,
-  thumbail: "/src/assets/img/taza.jpg",
   code: 13265,
   stock: 20,
+  cateory:"",
+  thumbail: "/src/public/uploads/taza.jpg",
 };
 const product2 = {
   title: "vaso térmico",
   description: "Frío/calor ",
   price: 3500,
-  thumbail: "/src/assets/img/mugCafe.jpg",
   code: 14278,
   stock: 20,
+  category:"",
+  thumbail: "/src/public/uploads/vasoTermico.jpg",
 };
 const product3 = {
   title: "pantufla",
   description: " ",
   price: 5500,
-  thumbail: "/src/public/pantufla.jpg",
   code: 1350,
   stock: 20,
+  category:"",
+  thumbail: "/src/public/uploads/pantufla.jpg",
 };
 const product4 = {
   title: "azucarera",
   description: "de cerámica  ",
   price: 4000,
-  thumbail: "/src/public/azucarera.jpg",
   code: 1280,
   stock: 20,
+  category:"",
+  thumbail: "/src/public/uploads/azucarera.jpg",
 };
 
 const productManager = new ProductManager();
 const asynFn = async () => {
   console.log(await productManager.addProduct(product));
+  console.log(await productManager.addProduct(product2));
   console.log(await productManager.addProduct(product3));
-  console.log(await productManager.getProductByid(product));
-  console.log(await productManager.updateProduct(product)); 
+  console.log(await productManager.addProduct(product4));
 };
 
-asyncFn();
+async();
 
  export default productManager;

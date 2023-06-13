@@ -1,0 +1,18 @@
+<h1>Chat</h1>
+
+<div "container">
+   <div id="messages" class="mb-3">
+    <label for="exampleFormControlInput1" class="form-label">Username</label>
+    <input type="text" class="form-control" id="username" placeholder="name@example.com">
+</div> 
+ <div class="mb-3">
+    <label for="exampleFormControlTextarea1" class="form-label">Messages</label>
+    <textarea class="form-control" id="messages" rows="3"></textarea>
+ </div>
+ <button id="send" type="button" class="btn btn-info" style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">
+  Enviar
+</button>
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/src/public/js/chat.js"></script>

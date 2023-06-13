@@ -1,11 +1,12 @@
-import express from "express";
-import ProductManager from "../products.json";
-const  productManager = new ProductManager();
+ import express from "express";
+import Router from "express";
+import ProductManager from "../file/products.json";
+const  data = new ProductManager();
 export const homeRouter = express.Router();
 
-homeRouter.get("/", async (req, res) => {
+Router.get("/", async (req, res) => {
     try{
-        const products = await productManager.getProduct();
+        const products = await data.getProduct();
         return res.render("home", {products: products});
     }catch (err) {
         res.status(err.status || 500).json({
@@ -18,4 +19,4 @@ homeRouter.get("/", async (req, res) => {
   
 });
 
-export default homeRouter;
+export default Router;

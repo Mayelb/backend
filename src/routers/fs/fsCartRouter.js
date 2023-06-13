@@ -1,10 +1,10 @@
 import Router from "express";
 import Router from Router.Router();
-import CartManager  from "../cartManager.js";
-const path = "/src/carts.json";
+import CartManager  from "../daos/fs/cartManager.js";
+const path = "/src/file/carts.json";
 const CartManager = new CartManager(path);
 
-cartRouter.post("/", async(req, res)  => {
+Router.post("/", async(req, res)  => {
     try{
         const newCart = req.body;
         const  addedCart = await CartManager.addCart(newCart);
@@ -25,7 +25,7 @@ cartRouter.post("/", async(req, res)  => {
       }
 });
 
-cartRouter.get("/", async(req, res) => {
+Router.get("/", async(req, res) => {
     try{
         const allCarts = await CartManager.read();
         if(allCarts){
@@ -46,7 +46,7 @@ cartRouter.get("/", async(req, res) => {
       }
 });
 
-cartRouter.get("/:id/products", async(req, res) => {
+Router.get("/:id/products", async(req, res) => {
     try{
         const idCart = req.params.idCart;
         const allCarts = await CartManager.read();
@@ -64,12 +64,13 @@ cartRouter.get("/:id/products", async(req, res) => {
         });
      }catch(err){
         res.status(err.status || 500).json({
-            status: "success",
+            status: "error",
             payload: err.message,
           });
      }
 });
-cartRouter.put("/:idCart/products/:idProduct", async(req, res)  =>{
+
+Router.put("/:idCart/products/:idProduct", async(req, res)  =>{
     try{
         const idCart = req.params.idCart;
         const idProduct = req.params.idProduct;
@@ -93,4 +94,4 @@ cartRouter.put("/:idCart/products/:idProduct", async(req, res)  =>{
      }
 });
 
-export default cartRouter;
+export default Router;

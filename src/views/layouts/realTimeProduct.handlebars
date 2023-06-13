@@ -1,8 +1,11 @@
-<div id="productList">
-    <table class="table">
+ 
+<div class="container" id="productList">
+  function BasicExample() {
+    return ( 
+    <table striped bordered hover>
   <thead>
     <tr>
-      <th scope="col">#</th>
+      <th scope="col">Id</th>
       <th scope="col">Title</th>
       <th scope="col">Description</th>
       <th scope="col">Price</th>
@@ -20,13 +23,58 @@
       <td>{{this.price}}</td>
       <td>{{this.code}}</td>
       <td>{{this.stock}}</td>
-      <td><img src="{{this.thumbail}}" alt=""></td>
+      <td>{{this.category}}</td>
+      <td><img src="{{this.thumbail}}" alt="{{this.id}}"></td>
     </tr>
      {{/each}}
   </tbody>
 </table>
+ );
+}
 </div>
+<div class="container">
+ function BasicExample() {
+  return (
+    <Form id = "form-product">
+      <Form.Group className="mb-3" controlId="title">
+        <Form.Label>Título</Form.Label>
+        <Form.Control type="title" />
+      </Form.Group>
+
+      <Form.Group className="mb-3" controlId="description">
+        <Form.Label>Descripción</Form.Label>
+        <Form.Control type="description" />
+      </Form.Group>
+
+       <Form.Group className="mb-3" controlId="price">
+        <Form.Label>Precio</Form.Label>
+        <Form.Control type="price" />
+      </Form.Group>
+
+       <Form.Group className="mb-3" controlId="code">
+        <Form.Label>Código</Form.Label>
+        <Form.Control type="code" />
+      </Form.Group>
+
+       <Form.Group className="mb-3" controlId="stock">
+        <Form.Label>Stock</Form.Label>
+        <Form.Control type="stock" />
+      </Form.Group>
+
+       <Form.Group className="mb-3" controlId="thumbail">
+        <Form.Label>Url de la imagen</Form.Label>
+        <Form.Control type="thumbail" />
+      </Form.Group>
+
+      <Button variant="info" type="submit">
+        Agregar Producto
+      </Button>
+    </Form>
+  );
+}
 
 
 <script src="/socket.io/socket.io.js"></script>
-<script src="/js/index.js"></script>
+<script src="/src/public/js/index.js"></script>
+
+ 

@@ -1,9 +1,11 @@
 import express from "express";
+import Router from "express";
+import Router from Router.Router();
 import ProductManager from "../products.json";
 const  productManager = new ProductManager();
 export const realtimeProductRouter = express.Router();
 
-realtimeProductRouter.get("/", async (req, res) => {
+Router.get("/", async (req, res) => {
     try{
         const products = await productManager.getProduct();
         return res.render("realTimeProduct", {products: products});
@@ -18,4 +20,4 @@ realtimeProductRouter.get("/", async (req, res) => {
   
 });
 
-export default realtimeProductRouter;
+export default Router;
