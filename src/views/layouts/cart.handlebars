@@ -1,0 +1,17 @@
+
+<a class="btn btn-info" href="#" onclick="backToHome" role="button">Home</a>
+<div "containers" id="">
+    {{#each products}}
+</div>
+<div class="card" style="width: 18rem;">
+  <img src="{{_id.thumbnail}}" class="card-img-top" alt="placeholder image"/>
+  <div class="card-body">
+    <p class="card-text">Cantidad: {{quantity}}</p>
+    <p class="card-text">{{_id.title}}</p>
+     <p class="card-text"> {{_id.description}} </p>
+    <p class="card-text">{{_id.price}}</p>
+  </div>
+{{#each}}
+</div>
+
+<script src="/src/public/js/cart.js"></script>

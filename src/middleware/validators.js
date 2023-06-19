@@ -4,7 +4,7 @@ const myProductManager = new productManager(path);
 
 
 
-const validatecode =  async(req, res)=>{
+const validateCode =  async(req, res)=>{
     const {code} = req.body;
     const allProducts = await myProductManager.getProduct();
    const productCode = allProducts.some((p) => p.code === product.code);
@@ -18,5 +18,5 @@ const validatecode =  async(req, res)=>{
    return;
 };
 
-export {validatecode};
+export {validateCode};
     

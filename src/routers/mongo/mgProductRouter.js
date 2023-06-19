@@ -18,22 +18,15 @@ Router.use(multer({ storage }).single("thumbail"));
 
 Router.get(`/`, async (req, res) => {
     try {
-      const limit = req.query.limit;
-      const products = await mgdb.getAll();
-      if (limit) {
-        res.status(200).json({
-          status: "success",
-          playload: products.slice(0, limit),
-        });
-      } else if (limit) {
+      const {limit, page, sort, query} = req.query;
+      const products = await mgdb.getAll(limit, page, sort, query);
+      if (products) {
         res.status(200).json({
           status: "success",
           playload: products,
         });
-      }else {
-        res.status(200).json({ status: "success", payload: [] });
-
-      }
+      } 
+      res.status(200).json({ status: "success", payload: [] });    
     } catch (err) {
       res.status(err.status || 500).json({
         status: "error",
@@ -66,22 +59,32 @@ Router.get(`/`, async (req, res) => {
     }
   });
 
-  Router.post(`/`, validateCode, async (req, res) => {
+  Router.post("/", validateCode, async (req, res) => {
     try {
-      const newProdduct = req.body;
-      const productCreate = await mgdb.create(newProdduct);
-      if (productCreate) {
-        return res.status(201).json({
-          status: "success",
-          payload: productCreate,
+      const newProduct = req.body;
+      
+      const response = await mgdb.getAll();
+      const allProducts = response.docs;
+      const product = allProducts.find(
+        (product) => product.code == newProduct.code
+      );
+      if (product) {
+        res.status(400).json({
+          status: "error",
+          payload:
+            "Invalid request body. Code already exists: " + newProduct.code,
         });
+        return;
       }
-      res.json({
-        status: "error",
+      const productCreated = await mgdb.create(newProduct);
+      console.log(productCreated);
+      res.status(201).json({
+        status: "success",
+        payload: productCreated,
       });
     } catch (err) {
       res.status(err.status || 500).json({
-        status: "success",
+        status: "error",
         payload: err.message,
       });
     }

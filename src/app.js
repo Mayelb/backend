@@ -7,6 +7,7 @@ import mgChatRouter from "./routers/mongo/mgChatRouter";
 import mgProductRouter from "./routers/mongo/mgProductRouter";
 import mgCartRouter from "./routers/mongo/mgCartRouter";
 import mgHomeRouter from "./routers/mongo/mgHomeRouter";
+import mgAuthRouter from "./routers/mongo/mgAuthRouter";
 import { Server } from "socket.io";
 import handlebars from "express-handlebars";
 import websockets from "./websockets/websockets";
@@ -29,6 +30,8 @@ const httpServer = app.listen(port, () =>{
 connectMongo();
 
 const socketServer = new Server(httpServer);
+
+websockets(io);
 
 socketServer.on("conection",(socket) => {
   console.log(" ${socket.id}");
@@ -57,16 +60,27 @@ app.engine("handlebars", handlebars.engine());
 app.use(express.static(path.join(__dirname, "views")));
 app.set("view engine", "handlebars");
 
+app.use(
+  session({
+    store: MongoStore.create({ mongoUrl: '', ttl: 7200 }),
+    secret: 'un-re-secreto',
+    resave: true,
+    saveUninitialized: true,
+  })
+);
 
-app.use("/fs/products", fsProducstRouter);
-app.use("/fs/carts", fsCartRouter);
-app.use("/fs/home", fsHomeRouter);
-app.use("/fs/products", fsRealtimeProductRouter);
+
+app.use("/api/products", fsProducstRouter);
+app.use("/api/carts", fsCartRouter);
+app.use("/", fsHomeRouter);
+app.use("/", fsRealtimeProductRouter);
 
 app.use("/home", mgHomeRouter);
 app.use("/products", mgProductRouter);
 app.use("/carts", mgCartRouter);
 app.use("/chat", mgChatRouter);
+app.use('/auth', mgAuthRouter);
+ 
 
 app.get("/", (req, res)=>{
   res.json({respuesta: "ok"});

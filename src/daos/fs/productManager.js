@@ -103,8 +103,8 @@ const product = {
   price: 2000,
   code: 13265,
   stock: 20,
-  cateory:"",
-  thumbail: "/src/public/uploads/taza.jpg",
+  cateory:"cocina",
+  thumbnail: "/src/public/uploads/taza.jpg",
 };
 const product2 = {
   title: "vaso térmico",
@@ -112,8 +112,8 @@ const product2 = {
   price: 3500,
   code: 14278,
   stock: 20,
-  category:"",
-  thumbail: "/src/public/uploads/vasoTermico.jpg",
+  category:"cocina",
+  thumbnail: "/src/public/uploads/vasoTermico.jpg",
 };
 const product3 = {
   title: "pantufla",
@@ -121,7 +121,7 @@ const product3 = {
   price: 5500,
   code: 1350,
   stock: 20,
-  category:"",
+  category:"invierno",
   thumbail: "/src/public/uploads/pantufla.jpg",
 };
 const product4 = {
@@ -130,8 +130,8 @@ const product4 = {
   price: 4000,
   code: 1280,
   stock: 20,
-  category:"",
-  thumbail: "/src/public/uploads/azucarera.jpg",
+  category:"cocina",
+  thumbnail: "/src/public/uploads/azucarera.jpg",
 };
 
 const productManager = new ProductManager();

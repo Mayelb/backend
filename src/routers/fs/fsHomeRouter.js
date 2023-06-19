@@ -1,8 +1,9 @@
- import express from "express";
-import Router from "express";
-import ProductManager from "../file/products.json";
-const  data = new ProductManager();
-export const homeRouter = express.Router();
+import { Router } from "express";
+const router = Router();
+import ProductManager from "../../daos/fs/productManager";
+const path = "../../file/products.json"
+const  data = new ProductManager(path);
+ 
 
 Router.get("/", async (req, res) => {
     try{

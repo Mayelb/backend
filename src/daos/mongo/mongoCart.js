@@ -1,20 +1,24 @@
+import { classMongo } from "./classMongo";
 import { cartModel } from "./models/cartModel";
 
-export class mongoProducts{
-    
+export class mongoProducts extends classMongo{
+    constructor(){
+      super("carts",cartModel);
+    }
+
     async getAll(){
          
-            const carritos = await cartModel.find({}).populate({
+            const carts = await this.baseModel.find({}).populate({
                 path: "products",
                 populate: {path: "id", model: "products"},
             });
-            return carritos      
+            return carts      
  
     }
 
     async getOne(id) {
         try {
-          const one = await cartModel.findById(id).populate({
+          const one = await  this.baseModel.findById(id).populate({
             path: "products",
             populate: { path: "_id", model: "products" },
           });
@@ -24,7 +28,7 @@ export class mongoProducts{
         }
       }
 
-      async addProductos(cart, product) {
+      async addProducts(cart, product) {
          
         const allProducts = cart.products;
         const productExists = allProducts.find(
@@ -35,29 +39,53 @@ export class mongoProducts{
         } else {
           cart.products.push({ _id: product._id, quantity: 1 });
         }
-        const cartUpdated = await cartModel.findByIdAndUpdate(cart._id, {
+        const cartUpdated = await this.baseModel.findByIdAndUpdate(cart._id, {
+          products: cart.products,
+        });
+        return cartUpdated;
+      }
+
+      async addManyProduct(cart, product, quantity) {
+        const allProducts = cart.products;
+        const productExists = allProducts.find(
+          (p) => p._id._id.valueOf() == product._id.valueOf()
+        );
+        if (productExists) {
+          productExists.quantity = quantity;
+        } else {
+          cart.products.push({ _id: product._id, quantity: quantity });
+        }
+        const cartUpdated = await this.baseModel.findByIdAndUpdate(cart._id, {
+          products: cart.products,
+        });
+        return cartUpdated;
+      } 
+
+      async deleteProduct(cart, product) {
+        const allProducts = cart.products;
+        if (allProducts.length == 0) throw new Error("Emppty cart");
+        const productExists = allProducts.find(
+          (p) => p._id._id.valueOf() == product._id.valueOf()
+        );
+        if (productExists) {
+          productExists.quantity > 1
+            ? (productExists.quantity -= 1)
+            : (cart.products = allProducts.filter(
+                (p) => p._id._id.valueOf() != product._id.valueOf()
+              ));
+        } else {
+          throw new Error("The product is not in the cart");
+        }
+        const cartUpdated = await this.baseModel.findByIdAndUpdate(cart._id, {
           products: cart.products,
         });
         return cartUpdated;
       }
     
-      async deleteProducto(carrito, productoId) {
-        const productoEnCarrito = carrito.productos.find(
-          (p) => p._id == productoId
-        );
-        if (productoEnCarrito) {
-          productoEnCarrito.cantidad > 1
-            ? productoEnCarrito.cantidad--
-            : (carrito.productos = carrito.productos.filter(
-                (p) => p._id != productoId
-              ));
-        } else {
-          throw new Error("the product is not in the cart");
-        }
-        const carritoUpdated = await cartModel.findByIdAndUpdate(
-          carrito._id,
-          { productos: carrito.productos }
-        );
-        return carritoUpdated;
+      async updateProductsOfOneCart(cart, products) {
+        const cartUpdated = await this.baseModel.findByIdAndUpdate(cart._id, {
+          products: products,
+        });
+        return cartUpdated;
       }
-    }     
+    }
