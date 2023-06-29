@@ -12,9 +12,12 @@ import { Server } from "socket.io";
 import handlebars from "express-handlebars";
 import websockets from "./websockets/websockets";
 import __dirname from "./utils/path";
+import passport from "./config/passport.configt";
 import path from "path";
 import ProductManager from "./file/products.json";
 import { connectMongo } from "./utils/mongoDB";
+import { session } from "passport";
+import flash from "connect-flash";
 const  data = new ProductManager();
  
 
@@ -63,16 +66,21 @@ app.set("view engine", "handlebars");
 app.use(
   session({
     store: MongoStore.create({ mongoUrl: '', ttl: 7200 }),
-    secret: 'un-re-secreto',
+    secret: 'secret',
     resave: true,
     saveUninitialized: true,
   })
 );
 
+app.use(passport.initialize());  
+app.use(passport.session());  
+
+app.use(flash());
+
 
 app.use("/api/products", fsProducstRouter);
 app.use("/api/carts", fsCartRouter);
-app.use("/", fsHomeRouter);
+app.use("/home", fsHomeRouter);
 app.use("/", fsRealtimeProductRouter);
 
 app.use("/home", mgHomeRouter);
@@ -80,6 +88,10 @@ app.use("/products", mgProductRouter);
 app.use("/carts", mgCartRouter);
 app.use("/chat", mgChatRouter);
 app.use('/auth', mgAuthRouter);
+app.use("/error", (req, res) => {
+  const { errorMessage } = req.flash();
+  res.render("error", { errorMessage });
+});
  
 
 app.get("/", (req, res)=>{
