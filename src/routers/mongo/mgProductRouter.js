@@ -1,6 +1,6 @@
 import Router from "express";
 import Router from Router.Router();
-import mongoProduct from "../../daos/mongo/mongoProduct"
+import mongoProduct from "../../service/productService"
 import multer from "multer";
 import {validateCode} from "../../middleware/validators";
 const mgdb = new mongoProduct;

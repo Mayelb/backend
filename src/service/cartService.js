@@ -1,5 +1,5 @@
-import { classMongo } from "./classMongo";
-import { cartModel } from "./models/cartModel";
+import { classMongo } from "./classService";
+import { cartModel } from "../daos/models/cartModel";
 
 export class mongoProducts extends classMongo{
     constructor(){
@@ -63,7 +63,7 @@ export class mongoProducts extends classMongo{
 
       async deleteProduct(cart, product) {
         const allProducts = cart.products;
-        if (allProducts.length == 0) throw new Error("Emppty cart");
+        if (allProducts.length == 0) throw new Error("Carrito vacío");
         const productExists = allProducts.find(
           (p) => p._id._id.valueOf() == product._id.valueOf()
         );
@@ -74,10 +74,17 @@ export class mongoProducts extends classMongo{
                 (p) => p._id._id.valueOf() != product._id.valueOf()
               ));
         } else {
-          throw new Error("The product is not in the cart");
+          throw new Error("No nay productos en el carrito");
         }
         const cartUpdated = await this.baseModel.findByIdAndUpdate(cart._id, {
           products: cart.products,
+        });
+        return cartUpdated;
+      }
+
+      async emptyCart(cart) {
+        const cartUpdated = await this.baseModel.findByIdAndUpdate(cart._id, {
+          products: [],
         });
         return cartUpdated;
       }

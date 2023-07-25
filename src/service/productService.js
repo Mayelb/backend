@@ -1,5 +1,5 @@
- import classMongo from "./classMongo";
- import productsModel from "./models/productsModel.js"
+ import classMongo from "./classService";
+ import productsModel from "../daos/models/productsModel.js"
 
  export class mongoProducts extends classMongo {
     constructor() {

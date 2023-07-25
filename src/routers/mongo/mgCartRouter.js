@@ -1,7 +1,7 @@
 import { Router } from "express";
 import Router from Router.Router();
-import  mongoCart from "../../daos/mongo/mongoCart";
-import { mongoProduct } from "../../daos/mongo/mongoProduct";
+import  mongoCart from "../../service/cartService";
+import { mongoProduct } from "../../service/productService";
 
 const mgdb = new mongoCart();
 const mgdbProducts = new mongoProduct();

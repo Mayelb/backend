@@ -1,4 +1,4 @@
-import { usersModels } from '../../daos/mongo/models/usersModels';
+import { usersModels } from '../daos/models/usersModels';
 
 
 export class mongoUsers {

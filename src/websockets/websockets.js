@@ -1,4 +1,4 @@
-import mongoChat from "../daos/mongo/mongoChat";
+import mongoChat from "../service/chatService";
 const db = new mongoChat();
 
 

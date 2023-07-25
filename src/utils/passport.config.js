@@ -1,5 +1,5 @@
 import passport from 'passport';
-import { mongoUsers } from '../daos/mongo/mongoUsers';
+import { mongoUsers } from '../service/usersService';
 import dotenv from "dotenv";
 dotenv.config();
 import { Strategy as LocalStrategy } from "passport-local";
@@ -13,13 +13,14 @@ const githubStrategy = GitHubStrategy;
  
 const GITHUB_CLIENT_ID = process.env.GITHUB_CLIENT_ID;
 const GITHUB_CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET;
+const GITHUB_CALLBACK_URL = process.env.GITHUB_CALLBACK_URL;
 
 passport.use(
     new githubStrategy(
       {
         clientID: GITHUB_CLIENT_ID,
         clientSecret: GITHUB_CLIENT_SECRET,
-        callbackURL: "http://localhost:8080/auth/github/callback",
+        callbackURL: GITHUB_CALLBACK_URL,
       },
       async (profile, done) => {
          

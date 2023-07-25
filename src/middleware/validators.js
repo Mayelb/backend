@@ -1,4 +1,4 @@
-import productManager from "../daos/fs/productManager";
+import productManager from "../daos/helpers/productManager";
 const path = "/src/file/products.json"
 const myProductManager = new productManager(path);
 

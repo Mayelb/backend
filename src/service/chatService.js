@@ -1,5 +1,5 @@
- import classMongo from "./classMongo";
- import chatModels from "./models/chatModel.js"
+ import classMongo from "./classService";
+ import chatModels from "../daos/models/chatModel.js"
  
  export class chatMongo extends classMongo {
     constructor() {

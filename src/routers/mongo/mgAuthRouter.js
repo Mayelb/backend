@@ -1,9 +1,8 @@
-import { usersModels } from '../../daos/mongo/models/usersModels';
 import { isAdmin, isUser } from '../../middleware/auth';
 import passport from 'passport';
 import { Router } from "express";
 import Router from Router.Router();
-import { createHash, isValidPassword } from '../../utils/bcrytp';
+ 
 
 
 
@@ -15,45 +14,15 @@ Router.get('/login', (req, res) => {
   return res.render('login', {});
 });
 
-Router.post('/login', passport.authenticate("login",{succesRedirect: "/home", failureRedirect: "/error",failureFlash: true}), async (req, res) => {
-
-  const { email, pass } = req.body;
-  if (!email || !pass) {
-    return res.status(400).render('error', { error: 'Ingrese su Email y password'});
-  }
-  const usuarioEncontrado = await usersModels.findOne({ email: email });
-  if (usuarioEncontrado &&  isValidPassword(pass, usuarioEncontrado.pass)) {
-    req.session.email = usuarioEncontrado.email;
-    req.session.isAdmin = usuarioEncontrado.isAdmin;
-
-    return res.redirect('/auth/perfil');
-  } else {
-    return res.status(401).render('error', { error: 'Email o password incorrecto'});
-  }
- 
-});
+Router.post('/login', passport.authenticate("login",{succesRedirect: "/home", failureRedirect: "/error",failureFlash: true}));
 
 
 Router.get('/register', (req, res) => {
   return res.render('register', {});
 });
 
-Router.post('/register', passport.authenticate("register",{succesRedirect: "/auth/login", failureRedirect: "/error", failureFlash: true}), async (req, res) => {
-  const { email, pass, firstName, lastName } = req.body;
-  if (!email || !pass || !firstName || !lastName) {
-    return res.status(400).render('error', { error: 'Datos incorrectos' });
-  }
-  try {
-    await usersModels.create({ email: email, pass: createHash (pass), firstName: firstName, lastName: lastName, isAdmin: false });
-    req.session.email = email;
-    req.session.isAdmin = false;
-
-    return res.redirect('/auth/perfil');
-  } catch (e) {
-    console.log(e);
-    return res.status(400).render('error', { error: 'No se pudo crear el usuario. Intente con otro email.' });
-  }
-});
+Router.post('/register', passport.authenticate("register",{succesRedirect: "/auth/login", failureRedirect: "/error", failureFlash: true}));
+ 
 
 Router.get('/logout', (req, res) => {
   req.session.destroy((err) => {
