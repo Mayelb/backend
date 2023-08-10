@@ -8,6 +8,7 @@ import mgProductRouter from "./routers/mongo/mgProductRouter";
 import mgCartRouter from "./routers/mongo/mgCartRouter";
 import mgHomeRouter from "./routers/mongo/mgHomeRouter";
 import mgAuthRouter from "./routers/mongo/mgAuthRouter";
+import userFakeRouter from "./routers/userFakeRouter";
 import { Server } from "socket.io";
 import handlebars from "express-handlebars";
 import websockets from "./websockets/websockets";
@@ -18,6 +19,7 @@ import ProductManager from "./file/products.json";
 import { connectMongo } from "./utils/mongoDB";
 import { session } from "passport";
 import flash from "connect-flash";
+import errorHandler from "./middlewares/error.js";
 const  data = new ProductManager();
  
 
@@ -92,7 +94,9 @@ app.use("/error", (req, res) => {
   const { errorMessage } = req.flash();
   res.render("error", { errorMessage });
 });
- 
+
+app.use("/api/userFake", userFakeRouter);
+app.use(errorHandler);
 
 app.get("/", (req, res)=>{
   res.json({respuesta: "ok"});

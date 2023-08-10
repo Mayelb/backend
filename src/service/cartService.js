@@ -1,5 +1,7 @@
-import { classMongo } from "./classService";
+import { classMongo } from "../controllers/classController";
 import { cartModel } from "../daos/models/cartModel";
+import EErros from '../../errors/enums';
+import CustomError from "../../errors/custom-error";
 
 export class mongoProducts extends classMongo{
     constructor(){
@@ -74,7 +76,11 @@ export class mongoProducts extends classMongo{
                 (p) => p._id._id.valueOf() != product._id.valueOf()
               ));
         } else {
-          throw new Error("No nay productos en el carrito");
+          CustomError.createError({
+            name: "cart without products",
+            message: "No hay productos en el carrito",
+            code: EErros.CART_ERROR,
+          }) 
         }
         const cartUpdated = await this.baseModel.findByIdAndUpdate(cart._id, {
           products: cart.products,

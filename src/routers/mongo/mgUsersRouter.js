@@ -1,4 +1,6 @@
 import { mongoUsers} from '../../daos/mongo/mongoUsers';
+import EErros from '../../errors/enums';
+import CustomError from "../../errors/custom-error";
 import { Router } from "express";
 import Router from Router.Router();
 
@@ -24,22 +26,16 @@ Router.get('/', async (req, res) => {
 });
 
 Router.post('/', async (req, res) => {
-  try {
+
     const { firstName, lastName, email } = req.body;
     const userCreated = await Service.createOne(firstName, lastName, email);
-    return res.status(201).json({
-      status: 'success',
-      msg: 'user created',
-      data: userCreated,
-    });
-  } catch (e) {
-    console.log(e);
-    return res.status(500).json({
-      status: 'error',
-      msg: 'something went wrong :(',
-      data: {},
-    });
-  }
+    if (userCreated) {
+      CustomError.createError({
+        name: "User creation error",
+        message: "Error trying to create user",
+        code: EErros.INVALID_USER_ERROR,
+      });
+    }
 });
 
 Router.delete('/:id', async (req, res) => {

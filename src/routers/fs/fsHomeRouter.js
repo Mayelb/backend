@@ -1,5 +1,5 @@
 import { Router } from "express";
-const router = Router();
+import Router from Router.Router();
 import ProductManager from "../../daos/helpers/productManager";
 const path = "../../file/products.json"
 const  data = new ProductManager(path);

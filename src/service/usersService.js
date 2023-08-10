@@ -1,11 +1,15 @@
 import { usersModels } from '../daos/models/usersModels';
-
+import EErros from '../../errors/enums';
+import CustomError from "../../errors/custom-error";
 
 export class mongoUsers {
   validateUser(firstName, lastName, email) {
     if (!firstName || !lastName || !email) {
-      
-      throw new Error('validation error: please complete firstName, lastname and email.');
+      CustomError.createError({
+        name: "User creation error",
+        message: "please complete firstName, lastname and email.",
+        code: EErros.INVALID_USER_ERROR,
+      });
     }
   }
   async getAll() {
