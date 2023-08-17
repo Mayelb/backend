@@ -1,25 +1,26 @@
 import express from "express";
-import fsProducstRouter from"./routers/fs/fsProductsRouter";
-import fsCartRouter from "./routers/fs/fsCartRouter";
-import { fsHomeRouter } from "./routers/fs/fsHomeRouter";
-import fsRealtimeProductRouter from "./routers/fs/fsRealTimeProductRouter"; 
-import mgChatRouter from "./routers/mongo/mgChatRouter";
-import mgProductRouter from "./routers/mongo/mgProductRouter";
-import mgCartRouter from "./routers/mongo/mgCartRouter";
-import mgHomeRouter from "./routers/mongo/mgHomeRouter";
-import mgAuthRouter from "./routers/mongo/mgAuthRouter";
-import userFakeRouter from "./routers/userFakeRouter";
+import fsProducstRouter from"../routers/fs/fsProductsRouter";
+import fsCartRouter from "../routers/fs/fsCartRouter";
+import { fsHomeRouter } from "../routers/fs/fsHomeRouter";
+import fsRealtimeProductRouter from "../routers/fs/fsRealTimeProductRouter"; 
+import mgChatRouter from "../routers/mongo/mgChatRouter";
+import mgProductRouter from "../routers/mongo/mgProductRouter";
+import mgCartRouter from "../routers/mongo/mgCartRouter";
+import mgHomeRouter from "../routers/mongo/mgHomeRouter";
+import mgAuthRouter from "../routers/mongo/mgAuthRouter";
+import userFakeRouter from "../routers/userFakeRouter";
 import { Server } from "socket.io";
 import handlebars from "express-handlebars";
-import websockets from "./websockets/websockets";
-import __dirname from "./utils/path";
+import websockets from "./websockets";
+import __dirname from "../utils/path";
 import passport from "./config/passport.configt";
 import path from "path";
 import ProductManager from "./file/products.json";
-import { connectMongo } from "./utils/mongoDB";
+import { connectMongo } from "../utils/mongoDB";
 import { session } from "passport";
 import flash from "connect-flash";
 import errorHandler from "./middlewares/error.js";
+import loggerTestRouter from "../routers/logs/loggerTestRouter";
 const  data = new ProductManager();
  
 
@@ -97,6 +98,7 @@ app.use("/error", (req, res) => {
 
 app.use("/api/userFake", userFakeRouter);
 app.use(errorHandler);
+app.use("/loggerTest",loggerTestRouter)
 
 app.get("/", (req, res)=>{
   res.json({respuesta: "ok"});

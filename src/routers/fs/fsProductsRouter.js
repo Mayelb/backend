@@ -4,6 +4,7 @@ import ProductManager from "../file/products.json";
 import multer from "multer";
 import {validateCode} from "/src/middleware/validators";
 const  data = new ProductManager();
+ 
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
