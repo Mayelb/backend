@@ -14,7 +14,7 @@ const storage = multer.diskStorage({
     },
   });
 
-Router.use(multer({ storage }).single("thumbail"));
+Router.use(multer({ storage }).single("thumbnail"));
 
 Router.get(`/`, async (req, res) => {
     try {

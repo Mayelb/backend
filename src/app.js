@@ -1,17 +1,17 @@
 import express from "express";
-import fsProducstRouter from"../routers/fs/fsProductsRouter";
-import fsCartRouter from "../routers/fs/fsCartRouter";
-import { fsHomeRouter } from "../routers/fs/fsHomeRouter";
-import fsRealtimeProductRouter from "../routers/fs/fsRealTimeProductRouter"; 
-import mgChatRouter from "../routers/mongo/mgChatRouter";
-import mgProductRouter from "../routers/mongo/mgProductRouter";
-import mgCartRouter from "../routers/mongo/mgCartRouter";
-import mgHomeRouter from "../routers/mongo/mgHomeRouter";
-import mgAuthRouter from "../routers/mongo/mgAuthRouter";
-import userFakeRouter from "../routers/userFakeRouter";
+import fsProducstRouter from"./routers/fs/fsProductsRouter";
+import fsCartRouter from "./routers/fs/fsCartRouter";
+import { fsHomeRouter } from "./routers/fs/fsHomeRouter";
+import fsRealtimeProductRouter from "./routers/fs/fsRealTimeProductRouter"; 
+import mgChatRouter from "./routers/mongo/mgChatRouter";
+import mgProductRouter from "./routers/mongo/mgProductRouter";
+import mgCartRouter from "./routers/mongo/mgCartRouter";
+import mgHomeRouter from "./routers/mongo/mgHomeRouter";
+import mgAuthRouter from "./routers/mongo/mgAuthRouter";
+import userFakeRouter from "./routers/userFakeRouter";
 import { Server } from "socket.io";
 import handlebars from "express-handlebars";
-import websockets from "./websockets";
+import websockets from "./websockets/websockets";
 import __dirname from "../utils/path";
 import passport from "./config/passport.configt";
 import path from "path";
@@ -21,11 +21,11 @@ import { session } from "passport";
 import flash from "connect-flash";
 import errorHandler from "./middlewares/error.js";
 import loggerTestRouter from "../routers/logs/loggerTestRouter";
+import swaggerJSDoc from "swagger-jsdoc";
+import swaggerUiExpress from "swagger-ui-express";
 const  data = new ProductManager();
- 
-
-
-
+import swaggerJSDoc from "swagger-jsdoc";
+import swaggerUiExpress from "swagger-ui-express";
 const app = express();
 const port = 8080 || process.env.port;
 
@@ -36,6 +36,21 @@ const httpServer = app.listen(port, () =>{
 connectMongo();
 
 const socketServer = new Server(httpServer);
+
+const swaggerOptions = {
+  definition: {
+    openapi: "3.0.1",
+    info: {
+      title: "Documentacion Rosarito",
+      description: "Ecommerce Rosarito.",
+    },
+  },
+  apis: [`${__dirname}/docs/**/*.yaml`],
+};
+
+const specs = swaggerJSDoc(swaggerOptions);
+app.use("/apidocs", swaggerUiExpress.serve, swaggerUiExpress.setup(specs));
+
 
 websockets(io);
 

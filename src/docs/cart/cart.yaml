@@ -1,0 +1,139 @@
+paths: 
+  api/carts:
+    post:
+      summary: Crear carrito
+      tags:
+        - carts
+      responses:
+        "201":
+          description: Carrito creado con éxito 
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#components/schemas/carts"
+  
+   api/carts:
+    get:
+      summary: Obtiene todos los carritos 
+      tags:
+        - carts
+      responses:
+        "201":
+          description: Los carritos fueron devueltos satisfactoriamente 
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#components/schemas/carts"
+   api/:idCart/products:   
+    get:
+      summary: 
+      tags:
+        - carts
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: id del carrito
+          schema:
+            $type: String
+      responses:
+        "201":
+          description: carrito  encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/carts"
+       "400":
+          description: No se encontró el carrito por el id. 
+
+    api/:idCart/products/:idProduct:            
+    put:
+      summary:  
+      tags:
+        - carts/products
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: id del carrito  
+          schema:
+            $type: 
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: id del producto
+          schema:
+            $type: String
+      parameters:      
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#components/requestBodies/cartUpdated"
+      responses:
+        "200":
+          description: Carrito actualizado exitosamente  
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/Success"
+
+    api/:idCart/products/:idProduct:            
+    delete:
+      summary:  
+      tags:
+        - carts/products
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: id del carrito  
+          schema:
+            $type: 
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: id del producto
+          schema:
+            $type: String
+      responses:
+        "200":
+          description: se eliminó el producto del carrito  
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/product"
+
+schemas:
+    Success:
+      type: object
+      properties:
+        status:
+          type: String
+          description: success or error
+        message:
+          type: String
+          description: aclarando que ocurrio
+      example:
+        status: success
+        message:  updated
+ carts:
+      type: object
+      properties:
+        _id:
+          type: ObjectId
+          description: ID auto generado by mongo
+        title:
+          type: String
+          description:  nombre del producto
+        description:
+          type: String
+
+   

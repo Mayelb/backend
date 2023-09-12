@@ -1,0 +1,95 @@
+paths:
+  api/products:
+    get:
+      summary: Obtiene todos los productos
+      tags:
+        - products
+      responses:
+        "200":
+          description: Los productos fueron devueltos con éxito
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#components/schemas/products"
+   api/products/id:   
+    get:
+      summary: Obtiene un producto
+      tags:
+        - products
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: id del producto que se busca
+          schema:
+            $type: String
+      responses:
+        "200":
+          description: producto encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/product"
+    api/products:            
+    post:
+      summary: Generar código del producto
+      tags:
+        - products
+      parameters:      
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#components/requestBodies/newProduct"
+      responses:
+        "200":
+          description: Código del producto generado exisotosamente 
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/Success"
+         "400":
+          description: Solicitud inválida. El código ya existe. 
+  api/products/id:                
+   put:
+      summary: Actualizar un producto  a partir del id
+      tags:
+        - products
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: id del producto que se busca
+          schema:
+            $type: String
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#components/requestBodies/productUpdate"
+      responses:
+        "200":
+          description: producto actualizado exitosamente 
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/Success"
+components:
+  schemas:
+    Success:
+      type: object
+      properties:
+        status:
+          type: String
+          description: success or error
+        message:
+          type: String
+          description: aclarando que ocurrio
+      example:
+        status: success
+        message:  updated
+    
