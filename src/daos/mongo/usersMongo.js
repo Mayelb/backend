@@ -1,8 +1,8 @@
-import { usersModels } from '../daos/models/usersModels';
+import { usersModels } from '../models/usersModels';
 import EErros from '../../errors/enums';
 import CustomError from "../../errors/custom-error";
 
-export class mongoUsers {
+export class UsersMongo {
   validateUser(firstName, lastName, email) {
     if (!firstName || !lastName || !email) {
       CustomError.createError({

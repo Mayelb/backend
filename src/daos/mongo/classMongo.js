@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-class classMongo {
+class ClassMongo {
   constructor(collectionName, docSchema) {
     this.baseModel = mongoose.model(collectionName, docSchema);
   }
@@ -53,4 +53,4 @@ class classMongo {
   }
 }
 
-export default classMongo;
+export default ClassMongo;

@@ -1,104 +1,73 @@
-import { classMongo } from "../controllers/classController";
-import { cartModel } from "../daos/models/cartModel";
-import EErros from '../../errors/enums';
-import CustomError from "../../errors/custom-error";
+import { ClassService } from "./classService";
+import getDAOS from "../daos/daos.factory.js";
+const { cartDao, ticketDao, userDao } = getDAOS();
 
-export class mongoProducts extends classMongo{
-    constructor(){
-      super("carts",cartModel);
+export class CartService extends ClassService {
+  constructor() {
+    super(cartDao);
+  }
+
+  async addManyOfTheSameProduct(cart, product, quantity) {
+    try {
+      const cartUpdated = await cartDao.addManyOfTheSameProduct(
+        cart,
+        product,
+        quantity
+      );
+      return cartUpdated;
+    } catch (err) {
+      throw new Error(err);
     }
+  }
 
-    async getAll(){
-         
-            const carts = await this.baseModel.find({}).populate({
-                path: "products",
-                populate: {path: "id", model: "products"},
-            });
-            return carts      
- 
+  async updateProductsOfOneCart(cart, products) {
+    try {
+      const cartUpdated = await cartDao.updateProductsOfOneCart(cart, products);
+      return cartUpdated;
+    } catch (err) {
+      throw new Error(err);
     }
+  }
 
-    async getOne(id) {
-        try {
-          const one = await  this.baseModel.findById(id).populate({
-            path: "products",
-            populate: { path: "_id", model: "products" },
-          });
-          return one;
-        } catch (err) {
-          throw new Error(err);
-        }
-      }
-
-      async addProducts(cart, product) {
-         
-        const allProducts = cart.products;
-        const productExists = allProducts.find(
-          (p) => p._id._id.valueOf() == product._id.valueOf()
-        );
-        if (productExists) {
-          productExists.quantity++;
-        } else {
-          cart.products.push({ _id: product._id, quantity: 1 });
-        }
-        const cartUpdated = await this.baseModel.findByIdAndUpdate(cart._id, {
-          products: cart.products,
-        });
-        return cartUpdated;
-      }
-
-      async addManyProduct(cart, product, quantity) {
-        const allProducts = cart.products;
-        const productExists = allProducts.find(
-          (p) => p._id._id.valueOf() == product._id.valueOf()
-        );
-        if (productExists) {
-          productExists.quantity = quantity;
-        } else {
-          cart.products.push({ _id: product._id, quantity: quantity });
-        }
-        const cartUpdated = await this.baseModel.findByIdAndUpdate(cart._id, {
-          products: cart.products,
-        });
-        return cartUpdated;
-      } 
-
-      async deleteProduct(cart, product) {
-        const allProducts = cart.products;
-        if (allProducts.length == 0) throw new Error("Carrito vacío");
-        const productExists = allProducts.find(
-          (p) => p._id._id.valueOf() == product._id.valueOf()
-        );
-        if (productExists) {
-          productExists.quantity > 1
-            ? (productExists.quantity -= 1)
-            : (cart.products = allProducts.filter(
-                (p) => p._id._id.valueOf() != product._id.valueOf()
-              ));
-        } else {
-          CustomError.createError({
-            name: "cart without products",
-            message: "No hay productos en el carrito",
-            code: EErros.CART_ERROR,
-          }) 
-        }
-        const cartUpdated = await this.baseModel.findByIdAndUpdate(cart._id, {
-          products: cart.products,
-        });
-        return cartUpdated;
-      }
-
-      async emptyCart(cart) {
-        const cartUpdated = await this.baseModel.findByIdAndUpdate(cart._id, {
-          products: [],
-        });
-        return cartUpdated;
-      }
-    
-      async updateProductsOfOneCart(cart, products) {
-        const cartUpdated = await this.baseModel.findByIdAndUpdate(cart._id, {
-          products: products,
-        });
-        return cartUpdated;
-      }
+  async removeProduct(cart, product) {
+    try {
+      const cartUpdated = await cartDao.removeProduct(cart, product);
+      return cartUpdated;
+    } catch (err) {
+      throw new Error(err);
     }
+  }
+
+  async emptyCart(cart) {
+    try {
+      const cartUpdated = await cartDao.emptyCart(cart);
+      return cartUpdated;
+    } catch (err) {
+      throw new Error(err);
+    }
+  }
+
+  async purchaseCart(cart) {
+    try {
+      const amount = cart.products.reduce((acc, product) => {
+        return acc + product._id.price * product.quantity;
+      }, 0);
+      const purchaser_email = await userDao.getPurchaser(cart);
+      const products = cart.products.map((product) => {
+        return {
+          product: product._id._id,
+          quantity: product.quantity,
+        };
+      });
+      const ticket = await ticketDao.create({
+        purchaser: purchaser_email,
+        amount: amount,
+        products: products,
+      });
+      const tickedCreated = await ticketDao.getOne(ticket._id);
+      return tickedCreated;
+    } catch (err) {
+      throw new Error(err);
+    }
+  }
+}

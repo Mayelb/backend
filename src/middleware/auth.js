@@ -11,3 +11,14 @@ export function isUser(req, res, next) {
     }
     return res.status(403).render('error', { error: 'error de autorización!' });
   }
+
+  export function isAuth(req, res, next) {
+    
+    if (req.isAuthenticated()) {
+       
+      console.log("usuario autenticado");
+      return next();
+    }
+     
+    res.redirect("/auth/login");
+  }
